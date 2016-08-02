@@ -8,7 +8,7 @@ import (
 
 type RouterApi struct {
 	*flags.Parser
-	opts             *RouterApiOptions
+	opts             *ApiOptions
 	APIListenAddress string
 	ZkServerAddress  string
 	ZkNeedConfig     bool
@@ -20,47 +20,47 @@ type RouterApiOptions struct {
 	InitZK           string `short:"I" long:"init-zk" description:"Initialize zk?"`
 }
 
-func NewRouterApi() *RouterApi {
-	opts := &RouterApiOptions{}
-	return &RouterApi{Parser: flags.NewParser(opts, flags.Default), opts: opts}
+func NewApi() *Api {
+	opts := &ApiOptions{}
+	return &Api{Parser: flags.NewParser(opts, flags.Default), opts: opts}
 }
 
-func (rapi *RouterApi) setConfig(options RouterApiOptions) {
+func (api *Api) setConfig(options ApiOptions) {
 
 	rapi.APIListenAddress = options.APIListenAddress
 	rapi.ZkServerAddress = options.ZkServerAddress
 	rapi.ZkNeedConfig = (options.InitZK != "")
 
 }
-func (rapi *RouterApi) loadConfig() {
-	rapi.Parse()
+func (api *Api) loadConfig() {
+	api.Parse()
 
-	if rapi.opts.APIListenAddress != "" {
-		rapi.APIListenAddress = rapi.opts.APIListenAddress
+	if api.opts.APIListenAddress != "" {
+		api.APIListenAddress = api.opts.APIListenAddress
 	} else {
-		rapi.APIListenAddress = "99999"
+		api.APIListenAddress = "99999"
 	}
-	if rapi.opts.ZkServerAddress != "" {
-		rapi.ZkServerAddress = rapi.opts.ZkServerAddress
+	if api.opts.ZkServerAddress != "" {
+		api.ZkServerAddress = api.opts.ZkServerAddress
 	} else {
-		rapi.ZkServerAddress = "28080"
+		api.ZkServerAddress = "28080"
 	}
-	if rapi.opts.InitZK == "y" {
-		rapi.ZkNeedConfig = true
+	if api.opts.InitZK == "y" {
+		api.ZkNeedConfig = true
 	}
 }
 
 func main() {
 
-	rapi := NewRouterApi()
-	rapi.loadConfig()
-	rapi.run()
+	api := NewApi()
+	api.loadConfig()
+	api.run()
 }
 
-func (rapi *RouterApi) run() {
+func (api *Api) run() {
 
-	api.Init(rapi.APIListenAddress)
-	zk.Init(rapi.ZkServerAddress, rapi.ZkNeedConfig)
+	api.Init(api.APIListenAddress)
+	zk.Init(api.ZkServerAddress, api.ZkNeedConfig)
 
 	api.Listen()
 
