@@ -1,6 +1,7 @@
 #Dogbreed API
 
 
+```
 //dogbreed api endpoints
 gmux.HandleFunc("/dogs", ListDogs).Methods("GET")
 
@@ -18,4 +19,4 @@ gmux.HandleFunc("/dogs/{URL}", DeleteDog).Methods("DELETE")
 gmux.HandleFunc("/dogs/favorite/{URL}", FavoriteDog).Methods("PUT")
 gmux.HandleFunc("/dogs/upvote/{URL}", UpvoteDog).Methods("PUT")
 gmux.HandleFunc("/dogs/downvote/{URL}", DownvoteDog).Methods("PUT")
-
+```
